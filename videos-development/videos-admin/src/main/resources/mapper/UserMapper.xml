@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zymonster.mapper.UserMapper">
+
+
+    <select id="getUserByUsername" resultType="com.zymonster.domain.Admin">
+    select * from `admin` where username = #{username}
+    </select>
+
+    <select id="getUserRolesByAdminId" resultType="com.zymonster.domain.Role">
+        select r.* from role r,admin_role ar where r.id = ar.role_id and ar.admin_id = #{userId}
+    </select>
+
+</mapper>

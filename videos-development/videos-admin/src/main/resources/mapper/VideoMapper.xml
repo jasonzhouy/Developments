@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zymonster.mapper.VideoMapper">
+
+    <resultMap id="videoResult" type="com.zymonster.domain.Video">
+        <id property="id" column="id" jdbcType="VARCHAR"></id>
+        <result property="username" column="username" jdbcType="VARCHAR"></result>
+        <result property="bgmName" column="bgm_name" jdbcType="VARCHAR"></result>
+        <result property="coverPath" column="cover_path" jdbcType="VARCHAR"></result>
+        <result property="videoPath" column="video_path" jdbcType="VARCHAR"></result>
+        <result property="videoDesc" column="video_desc" jdbcType="VARCHAR"></result>
+        <result property="likeCounts" column="like_counts" jdbcType="INTEGER"></result>
+        <result property="status" column="status" jdbcType="INTEGER"></result>
+        <result property="tags" column="tag_name" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <resultMap id="ReportResult" type="com.zymonster.domain.Report">
+        <id property="id" column="id" jdbcType="VARCHAR"></id>
+        <result property="videoId" column="video_id" jdbcType="VARCHAR"></result>
+        <result property="reportFrom" column="report_from" jdbcType="VARCHAR"></result>
+        <result property="reportTo" column="report_to" jdbcType="VARCHAR"></result>
+        <result property="reportTitle" column="title" jdbcType="VARCHAR"></result>
+        <result property="reportReason" column="content" jdbcType="VARCHAR"></result>
+        <result property="reportVideoCoverPath" column="cover_path" jdbcType="VARCHAR"></result>
+        <result property="reportVideoPath" column="video_path" jdbcType="VARCHAR"></result>
+        <result property="reportTime" column="create_date" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <select id="getAllVideoList" resultMap="videoResult">
+        select
+        a.id,a.username,b.bgm_name,a.cover_path,a.video_path,a.video_desc,a.like_counts,a.status,a.tag,a.create_time
+        from
+        (
+        (select
+        videos.id as id,
+        users.username as username,
+        videos.cover_path as cover_path,
+        videos.video_path as video_path,
+        videos.video_desc as video_desc,
+        videos.`like_counts` as like_counts,
+        videos.status as status,
+        videos.`create_time` as create_time,
+        videos.audio_id as audio_id,
+        tags.name as tag
+        from
+        users,videos,tags
+        where
+        1 = 1
+        <if test="username != '' and username != null">
+            and username = #{username}
+        </if>
+        and
+        videos.user_id = users.id
+        and
+        videos.tags_id = tags.id
+        )a
+        left join
+        (select
+        bgm.id as id,
+        bgm.`name` as bgm_name
+        from
+        videos,bgm
+        where
+        videos.audio_id = bgm.id)b
+        on
+        a.audio_id = b.id)
+
+
+    </select>
+
+    <select id="getReportList" resultMap="ReportResult">
+        select a.id,a.video_id,b.username as report_from,a.report_to,a.title,a.content,a.cover_path,a.video_path,a.create_date FROM
+(select ur.id,videos.id as video_id,ur.`userid`,ur.title,ur.content,videos.cover_path,videos.video_path,users.username as report_to,ur.create_date from users_report ur,videos,users where ur.`deal_video_id` = videos.id and ur.`deal_user_id` = users.id)a left join (
+select ur.id,users.username from users_report ur,users where ur.`userid` = users.id
+)b
+on a.id = b.id
+    </select>
+
+
+    <delete id="deleteVideo">
+        delete from videos where id = #{id}
+    </delete>
+
+    <delete id="deleteVideoHistory">
+        delete from video_history where video_id = #{id}
+    </delete>
+
+    <delete id="deleteUserLikeVideos">
+        delete from users_like_videos where video_id = #{id}
+    </delete>
+
+    <select id="getPath" resultMap="videoResult">
+        select id,cover_path,video_path from videos where id = #{id}
+    </select>
+
+    <delete id="deleteReport">
+        delete from users_report where id = #{id}
+    </delete>
+
+    <update id="offlineVideo">
+        update videos set status = 2 where id = #{id}
+    </update>
+
+    <update id="onlineVideo">
+        update videos set status = 1 where id = #{id}
+    </update>
+
+</mapper>

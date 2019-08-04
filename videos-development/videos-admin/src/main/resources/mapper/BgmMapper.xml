@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zymonster.mapper.BgmMapper">
+
+
+    <resultMap id="BgmResult" type="com.zymonster.domain.Bgm">
+        <id column="id" property="id" jdbcType="VARCHAR"></id>
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="author" property="author" jdbcType="VARCHAR" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getBgmList"  resultMap="BgmResult">
+
+        select * from bgm
+
+    </select>
+
+    <insert id="addBgm" parameterType="com.zymonster.domain.Bgm">
+        insert into bgm(id,author,`name`,path)
+        values (#{id},#{author},#{name},#{path})
+    </insert>
+
+    <delete id="deleteBgm" parameterType="String">
+        delete from bgm where id = #{id}
+    </delete>
+
+
+    <select id="getBgmById"  resultMap="BgmResult">
+
+        select id,name,author,path from bgm where id = #{id}
+
+    </select>
+
+</mapper>

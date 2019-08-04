@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zymonster.mapper.ChartsMapper">
+
+
+
+    <select id="getChart1"  resultType="com.zymonster.domain.charts.Chart1">
+
+       select tags.name as tagName,count(*) as nums from videos,tags where tags.id = videos.tags_id group by tags_id;
+
+    </select>
+
+    <select id="getChart2"  resultType="com.zymonster.domain.charts.Chart2">
+
+      select tags.name as `name`,count(*) as `value` from video_history vh,videos,tags where vh.video_id = videos.id and tags.id = videos.tags_id group by tags_id;
+
+    </select>
+
+
+
+
+</mapper>

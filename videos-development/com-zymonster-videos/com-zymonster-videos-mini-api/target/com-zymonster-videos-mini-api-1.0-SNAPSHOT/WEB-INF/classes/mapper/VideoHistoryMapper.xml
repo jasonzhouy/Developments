@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zymonster.mapper.VideoHistoryMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zymonster.pojo.VideoHistory">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="video_id" property="videoId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="visit_time" property="visitTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="CountVistTimesResultMap" type="com.zymonster.pojo.vo.VideoHistoryVO">
+        <!--
+          WARNING - @mbg.generated
+        -->
+
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="tags_id" property="tagsId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getVideoAllHistory" resultMap="BaseResultMap" parameterType="String">
+            select * from video_history where video_id = #{videoId}
+            order by visit_time DESC
+    </select>
+
+    <select id="getUserAllVideoHistory" resultMap="CountVistTimesResultMap" parameterType="String">
+           select c.user_id,c.tags_id,count(*) as `number` from
+      (select a.*, b.tags_id from
+      (select user_id,video_id,visit_time from video_history  where user_id = #{userId}
+      and visit_time > NOW() - INTERVAL 2 HOUR )a
+    left join
+    (select id,tags_id from videos)b
+  on a.video_id = b.id)c
+  group by tags_id
+  order by `number` desc;
+    </select>
+
+
+</mapper>
