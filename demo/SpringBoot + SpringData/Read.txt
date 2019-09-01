@@ -1,0 +1,4 @@
+SpringBoot整合JPA实现mysql的查询+表以及字段别名
+
+参考：https://blog.csdn.net/weixin_35172526/article/details/85488244 结合
+https://blog.csdn.net/LQW_java_home/article/details/53079363 别名
