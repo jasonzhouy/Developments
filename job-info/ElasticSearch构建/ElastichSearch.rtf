@@ -1,0 +1,87 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset134 STSongti-SC-Regular;\f2\fnil\fcharset0 AppleColorEmoji;
+\f3\froman\fcharset0 Times-Bold;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red213\green42\blue32;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c87451\c25098\c16471;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl480\partightenfactor0
+
+\f0\fs28 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 // 
+\f1 \'c0\'fb\'d3\'c3
+\f0 ik
+\f1 \'b4\'b4\'bd\'a8\'cb\'f7\'d2\'fd
+\f2 \uc0\u10133 
+\f0 type
+\f1 \'d2\'d4\'bc\'b0\'c9\'e8\'d6\'c3\'d6\'d0\'ce\'c4\'b7\'d6\'b4\'ca
+\f0 \
+// 
+\f1 \'b4\'cb\'b4\'a6\'d6\'b8\'b6\'a8
+\f0 fielddata
+\f1 \'ce\'de\'d0\'a7\'a3\'ac\'c4\'ac\'c8\'cf\'b9\'d8\'b1\'d5
+\f0 \
+curl -XPOST 'http://localhost:9200/
+\f3\b \cf3 \strokec3 boss/job
+\f0\b0 \cf2 \strokec2 ?pretty' -H 'Content-Type:application/json' -d '\
+\{\
+  "properties": \{\
+    "address": \{\
+        
+\f3\b "type": "keyword",
+\f0\b0 \
+        "search_analyzer": "ik_smart"\
+    \},\
+    "name": \{\
+      "type": "text",\
+        "analyzer": "ik_max_word",\
+          "search_analyzer": "ik_smart",\
+\pard\pardeftab720\sl480\partightenfactor0
+
+\f3\b \cf2 "fields":\{
+\f0\b0 \
+
+\f3\b "origin":\{
+\f0\b0 \
+
+\f3\b "type": "keyword"
+\f0\b0 \
+
+\f3\b \}
+\f0\b0 \
+
+\f3\b \}
+\f0\b0 \
+
+\f3\b     \},
+\f0\b0 \
+    "company": \{\
+      
+\f3\b "type": "keyword",
+\f0\b0 \
+      "analyzer": "ik_max_word",\
+      "search_analyzer": "ik_smart"\
+    \},\
+    "degree": \{\
+      "type": "integer"\
+    \},\
+    "experience": \{\
+      "type": "integer"\
+    \},\
+    "min_salary": \{\
+      "type": "integer"\
+    \},\
+    "max_salary": \{\
+      "type": "integer"\
+    \},\
+    "scale": \{\
+       "analyzer": "ik_max_word",\
+       "search_analyzer": "ik_smart"\
+    \},\
+    "postdate":\{\
+      "type":"date",\
+      "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"\
+    \}\
+  \}\
+\}'\
+}
